@@ -12,10 +12,6 @@ export class AppComponent {
       to: "/",
       label: "Home"
     },
-    {
-      to: "/usd",
-      label: "USD"
-    }
   ]
 }
 
