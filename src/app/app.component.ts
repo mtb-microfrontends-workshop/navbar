@@ -12,6 +12,10 @@ export class AppComponent {
       to: "/",
       label: "Home"
     },
+    {
+      to: "cad",
+      label: "CAD"
+    },
   ]
 }
 
