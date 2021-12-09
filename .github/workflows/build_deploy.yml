@@ -23,12 +23,12 @@ jobs:
       - run: npm install
       # - run: npm run test
       - run: npm run build
-      - run: rm -rf dist/index.html
+      - run: rm dist/navbar/index.html
       - run: find dist
       - uses: actions/upload-artifact@v2
         with:
           name: frontend-assets
-          path: dist
+          path: dist/${{ github.event.repository.name }}
   deploy:
     if: github.ref == 'refs/heads/main' && github.repository_owner == 'mtb-microfrontends-workshop'
     needs: [build]
@@ -49,3 +49,6 @@ jobs:
           destination: mtb.microfrontends.app/apps/${{ github.event.repository.name }}/${{ github.sha }}
           headers: |-
             cache-control: public, max-age=30
+      - id: update-import-map
+        run: |
+          curl -d '{"service": "${{ github.event.repository.name }}", "url": "https://mtb.microfrontends.app/${{ github.event.repository.name }}/${{ github.sha }}/main.js"}' -X PATCH ${{ secrets.IMD_ORIGIN }}/services?env=mtb -H "Accept: application/json" -H "Content-Type: application/json" --fail-with-body
